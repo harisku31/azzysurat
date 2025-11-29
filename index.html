@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Surat Romantis</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f7e9f0, #d6f0f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hidden { display: none; }
+    .container { text-align: center; }
+
+    input, button {
+      padding: 10px 15px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background: #ffb6c1;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: #ff8fab; }
+
+    /* Animasi pesawat kertas */
+    .plane {
+      font-size: 60px;
+      animation: fly 2s forwards;
+    }
+    @keyframes fly {
+      0% { transform: translateY(0) rotate(0); }
+      100% { transform: translate(-200px,-200px) rotate(-20deg); opacity:0; }
+    }
+
+    /* Amplop */
+    .envelope {
+      width: 120px;
+      height: 80px;
+      background: #fff;
+      border: 2px solid #ccc;
+      margin: 20px auto;
+      position: relative;
+      cursor: pointer;
+      transition: 0.5s;
+    }
+    .envelope:before {
+      content:"";
+      position:absolute;
+      top:-40px; left:0;
+      width:0; height:0;
+      border-left:60px solid transparent;
+      border-right:60px solid transparent;
+      border-bottom:40px solid #fff;
+    }
+    .envelope:hover { transform: scale(1.1); }
+
+    /* Surat romantis */
+    .letter {
+      background:#fff;
+      padding:20px;
+      border-radius:10px;
+      width:300px;
+      margin:20px auto;
+      text-align:left;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+      border: 2px solid #ffb6c1;
+    }
+
+    /* Animasi paket bounce */
+    .package {
+      font-size: 60px;
+      animation: bounce 1s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="step1">
+      <h2>Masukkan Nama</h2>
+      <input type="text" id="nameInput" placeholder="Nama kamu...">
+      <button onclick="goToPassword()">Lanjut</button>
+    </div>
+
+    <div id="step2" class="hidden">
+      <h2>Password</h2>
+      <input type="password" id="passInput" placeholder="Password...">
+      <button onclick="checkPassword()">Masuk</button>
+    </div>
+
+    <div id="planeStep" class="hidden">
+      <div class="plane">✈</div>
+    </div>
+
+    <div id="envelopeStep" class="hidden">
+      <div class="envelope" onclick="openLetter()"></div>
+    </div>
+
+    <div id="letterStep" class="hidden">
+      <div class="letter" id="letterText"></div>
+      <button onclick="yesChoice()">Mau 💖</button>
+      <button id="noBtn" onclick="moveNo()">Enggak 🙈</button>
+    </div>
+
+    <div id="replyStep" class="hidden">
+      <textarea id="replyText" placeholder="Tulis balasanmu..." rows="5" cols="30"></textarea><br>
+      <button onclick="sendReply()">Kirim ✈</button>
+    </div>
+
+    <div id="packageStep" class="hidden">
+      <div class="package">📦</div>
+      <h3>Paket sampai tujuan!</h3>
+    </div>
+  </div>
+
+<script>
+function goToPassword(){
+  document.getElementById("step1").classList.add("hidden");
+  document.getElementById("step2").classList.remove("hidden");
+}
+
+function checkPassword(){
+  const pass = document.getElementById("passInput").value;
+  if(pass === "250825"){
+    document.getElementById("step2").classList.add("hidden");
+    document.getElementById("planeStep").classList.remove("hidden");
+    setTimeout(()=>{
+      document.getElementById("planeStep").classList.add("hidden");
+      document.getElementById("envelopeStep").classList.remove("hidden");
+    },2000);
+  } else {
+    alert("Password salah!");
+  }
+}
+
+function openLetter(){
+  document.getElementById("envelopeStep").classList.add("hidden");
+  document.getElementById("letterStep").classList.remove("hidden");
+  typeWriter("letterText", 
+  "Hai kamu yang selalu ada di pikiranku... 💌\n\n" +
+  "Sejak pertama kali aku mengenalmu, ada sesuatu yang berbeda. " +
+  "Setiap senyummu seperti cahaya kecil yang mampu mengubah hari-hariku menjadi lebih indah. " +
+  "Aku menulis surat ini bukan hanya untuk sekadar menyapa, tapi untuk menyampaikan betapa berharganya dirimu bagiku.\n\n" +
+  "Aku ingin kamu tahu bahwa setiap detik bersamamu adalah momen yang aku simpan rapat di hati. " +
+  "Aku ingin kita berjalan bersama, melewati hari-hari dengan tawa, cerita, dan mimpi yang kita bangun berdua. " +
+  "Mungkin sederhana, tapi bagiku itu adalah kebahagiaan yang tak ternilai.\n\n" +
+  "Dan jika jawabanmu adalah 'Mau', maka aku janji akan menjaganya sebaik mungkin, selamanya. 💖"
+  );
+}
+
+function typeWriter(elementId,text){
+  let i=0;
+  const speed=50;
+  function typing(){
+    if(i<text.length){
+      document.getElementById(elementId).innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing,speed);
+    }
+  }
+  typing();
+}
+
+function yesChoice(){
+  document.getElementById("letterStep").classList.add("hidden");
+  document.getElementById("replyStep").classList.remove("hidden");
+}
+
+function moveNo(){
+  const noBtn = document.getElementById("noBtn");
+  const x = Math.floor(Math.random() * (window.innerWidth - 100));
+  const y = Math.floor(Math.random() * (window.innerHeight - 50));
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+function sendReply(){
+  document.getElementById("replyStep").classList.add("hidden");
+  const plane=document.createElement("div");
+  plane.className="plane";
+  plane.innerHTML="✈";
+  document.body.appendChild(plane);
+  setTimeout(()=>{
+    plane.remove();
+    document.getElementById("packageStep").classList.remove("hidden");
+  },2000);
+}
+</script>
+</body>
+</html>
